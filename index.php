@@ -153,9 +153,10 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
                                 foreach ($evoList AS $evo){
                                     $evoData = fetcher("https://pokeapi.co/api/v2/pokemon/" . $evo);
                                     echo '<td>';
+                                    echo '<a href="index.php?pokemon='.$evo.'">';
                                     echo '<img src="' . $evoData["sprites"]["front_default"] . '"/>';
+                                    echo '</a>';
                                     echo '</td>';
-
                                 }
                                 ?>
                             </tr>
