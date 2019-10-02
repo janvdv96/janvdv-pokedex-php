@@ -6,9 +6,8 @@
 
 #imgDisplay {
     background: white;
-    background-size: 101%;
-    width: 170px;
-    height: 170px;
+    width: 200px;
+    height: 200px;
     border: 3px solid black;
     border-radius: 50%;
     margin-top: auto;
@@ -36,7 +35,6 @@
     padding: 10px;
     overflow-x: -moz-scrollbars-horizontal;
     overflow-y: hidden;
-    margin-left: 20px;
 }
 
 #flavorDisplay {
@@ -59,7 +57,7 @@
     background-color: crimson;
     border: 3px solid black;
     border-radius: 30px;
-    width: 60%;
+    width: 65%;
 }
 
 #run {
@@ -150,7 +148,7 @@ tr td {
 }
 
 ::-webkit-scrollbar {
-    height: 5px;
+    height: 10px;
     width: 10px;
 }
 
@@ -195,5 +193,9 @@ tr td {
 
 .grow:hover {
     transform: scale(1.2);
+}
+
+.thick-border{
+    border: 3px solid black;
 }
 
