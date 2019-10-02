@@ -20,14 +20,14 @@
     background-size: cover;
     height: 220px;
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     border: 3px solid black;
     border-radius: 0 0 10px 10px;
     margin-top: -3px;
 }
 
 #evoDisplay {
-    background-color: white;
+    background-color: #8DC73E;
     border: 3px solid black;
     border-radius: 10px;
     display: flex;
@@ -45,7 +45,7 @@
     border-radius: 10px;
     width: 77%;
     height: 240px;
-    padding: 20px;
+    padding: 10px;
     font-size: 9px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -81,7 +81,7 @@
 }
 
 #moveBox {
-    background-color: white;
+    background-color: #8DC73E;
     border: 3px solid black;
     border-radius: 10px;
     display: flex;
@@ -122,7 +122,7 @@ body {
 }
 
 table {
-    width: 95%;
+    width: 80%;
 }
 
 tr td {
@@ -134,7 +134,7 @@ tr td {
     /*text-align: left;*/
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .evoImg {
@@ -187,5 +187,13 @@ tr td {
     background-repeat: no-repeat;
     background-position: center;
     align-items: center;
+}
+
+.grow {
+    transition: all .2s ease-in-out;
+}
+
+.grow:hover {
+    transform: scale(1.2);
 }
 

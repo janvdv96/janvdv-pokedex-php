@@ -6,17 +6,17 @@ function fetcher($url)
     return json_decode($data, true);
 }
 
-if (isset($_GET["pokemon"])){
+if (isset($_GET["pokemon"])) {
     $data = fetcher("https://pokeapi.co/api/v2/pokemon/" . $_GET["pokemon"]);
-} else{
-    $data = fetcher("https://pokeapi.co/api/v2/pokemon/1");
+} else {
+    $data = fetcher("https://pokeapi.co/api/v2/pokemon/bulbasaur");
 }
 
 $speciesData = fetcher($data["species"]["url"]);
 $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
 
 ?>
-
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,12 +28,18 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="<?php echo $data["sprites"]["front_default"]; ?>" sizes="128x128"
+          type="image/x-icon"/>
 </head>
 <body>
 <div class="jumbotron vertical-center">
     <div class="container container-fluid p-4 mt-2">
-        <form action="index.php" method="get">
-            <input type="text" name="pokemon" value="" class="rounded">
+        <form action="index.php" method="get" class="mb-3">
+            <input type="text" name="pokemon" value="<?php if (isset($_GET["pokemon"])) {
+                echo $_GET["pokemon"];
+            } else {
+                echo 'bulbasaur';
+            } ?>" class="rounded text-center">
             <input type="submit" value="Search" class="rounded-pill">
         </form>
         <div class="row">
@@ -103,7 +109,18 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
                 <img id="imgDisplay" class="" src="<?php echo $data["sprites"]["front_default"]; ?>" alt="pokemon">
             </div>
             <div class="col">
-                <div id="flavorDisplay"></div>
+                <div id="flavorDisplay">
+                    <?php
+                    $flavor_en = [];
+                    foreach ($speciesData["flavor_text_entries"] AS $flavor_text) {
+                        if ($flavor_text["language"]["name"] === "en") {
+                            $flavor_en[] = $flavor_text["flavor_text"];
+                        }
+                    }
+                    $flavor_rand = array_rand($flavor_en);
+                    echo $flavor_en[$flavor_rand];
+                    ?>
+                </div>
             </div>
         </div>
         <div class="row mt-3">
@@ -115,14 +132,14 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
                         foreach ($data["moves"] AS $move) {
                             $moveList[] = $move["move"]["name"];
                         }
-                        if (count($moveList) >= 4){
+                        if (count($moveList) >= 4) {
                             for ($i = 0; $i < 4; $i++) {
                                 $random_move = array_rand($moveList);
                                 echo '<li>';
                                 echo $moveList[$random_move];
                                 echo '</li>';
                             }
-                        } else{
+                        } else {
                             for ($i = 0; $i < count($moveList); $i++) {
                                 echo '<li>';
                                 echo $moveList[$i];
@@ -141,19 +158,19 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
                                 <?php
                                 $evoList = [];
                                 $evoList[] = $evolutionData["chain"]["species"]["name"];
-                                foreach ($evolutionData["chain"]["evolves_to"] as $evolvesTo){
+                                foreach ($evolutionData["chain"]["evolves_to"] as $evolvesTo) {
                                     $evoList[] = $evolvesTo["species"]["name"];
-                                    foreach ($evolvesTo["evolves_to"] AS $evolvesToTo){
+                                    foreach ($evolvesTo["evolves_to"] AS $evolvesToTo) {
                                         $evoList[] = $evolvesToTo["species"]["name"];
-                                        foreach ($evolvesToTo["evolves_to"] AS $evolvesToToTo){
+                                        foreach ($evolvesToTo["evolves_to"] AS $evolvesToToTo) {
                                             $evoList[] = $evolvesToToTo["species"]["name"];
                                         }
                                     }
                                 }
-                                foreach ($evoList AS $evo){
+                                foreach ($evoList AS $evo) {
                                     $evoData = fetcher("https://pokeapi.co/api/v2/pokemon/" . $evo);
-                                    echo '<td>';
-                                    echo '<a href="index.php?pokemon='.$evo.'">';
+                                    echo '<td  class="grow">';
+                                    echo '<a href="index.php?pokemon=' . $evo . '">';
                                     echo '<img src="' . $evoData["sprites"]["front_default"] . '"/>';
                                     echo '</a>';
                                     echo '</td>';
@@ -167,12 +184,5 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
         </div>
     </div>
 </div>
-
 </body>
 </html>
-
-<?php
-var_dump($evoList);
-echo '<hr>';
-var_dump($data);
-?>
