@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-// Function for fetching and returning a JSON file
+ini_set('display_errors', "1");
+ini_set('display_startup_errors', "1");
+error_reporting(E_ALL);
+
+// Function for fetching and returning a JSON array
 function fetcher(string $url): array
 {
     $data = file_get_contents($url);
@@ -27,7 +31,8 @@ function evoCatcher(array $evolutionData): array
 }
 
 // Function to gather all english flavor texts into one array
-function flavorCatcher(array $speciesData) : array {
+function flavorCatcher(array $speciesData): array
+{
     $flavor_en = [];
     foreach ($speciesData["flavor_text_entries"] AS $flavor_text) {
         if ($flavor_text["language"]["name"] === "en") {
@@ -48,7 +53,7 @@ if (isset($_GET["pokemon"])) {
     $data = fetcher("https://pokeapi.co/api/v2/pokemon/1");
 }
 
-// Fetch two more JSON files with fetcher function, needed for flavor_text and evolutions
+// Fetch two more JSON files with the "fetcher" function, needed for the flavorCatcher and evoCatcher functions
 $speciesData = fetcher($data["species"]["url"]);
 $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
 ?>
@@ -70,9 +75,8 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
 <div class="jumbotron vertical-center">
     <div class="container container-fluid p-4 mt-2">
         <form action="index.php" method="get" class="mb-3">
-            <input type="text" name="pokemon" value="<?php // Display the name of the pokemon in the input field
-            echo ucfirst($data["name"]);
-            ?>" class="rounded-pill text-center thick-border">
+            <input type="text" name="pokemon" value="<?php echo ucfirst($data["name"]); ?>"
+                   class="rounded-pill text-center thick-border">
             <input type="submit" value="Search" class="rounded-pill thick-border">
         </form>
         <div class="row">
@@ -131,11 +135,8 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
             <div class="col-3 p-3">
                 <img id="imgDisplay" alt="pokemon" onclick="imgChange()" class="" src="
                 <?php // Display image of the pokemon, if null -> display a pokeBall image
-                if ($data["sprites"]["front_default"] != null) {
-                    echo $data["sprites"]["front_default"];
-                } else {
-                    echo 'src/pokeball.png';
-                } ?>">
+                if ($data["sprites"]["front_default"] != null) echo $data["sprites"]["front_default"];
+                else echo 'src/pokeball.png'; ?>">
                 <div class="row mt-2 justify-content-center">
                     <button class="rounded-pill thick-border mr-2" onclick="imgChange()">Shiny</button>
                     <button class="rounded-pill thick-border" onclick="rotationChange()">Flip</button>
@@ -195,16 +196,14 @@ $evolutionData = fetcher($speciesData["evolution_chain"]["url"]);
                 <div class="row mt-2 mx-auto justify-content-center">
                     <a href="index.php?pokemon=<?php echo($data["id"] - 1) ?>">
                         <button class="rounded-pill mr-2 thick-border" <?php
-                        if ($data["id"] === 1) {
-                            echo 'disabled=disabled"';
-                        } ?>>Prev
+                        if ($data["id"] === 1) echo 'disabled=disabled"'; ?>
+                        >Prev
                         </button>
                     </a>
                     <a href="index.php?pokemon=<?php echo($data["id"] + 1) ?>">
                         <button class="rounded-pill thick-border" <?php
-                        if ($data["id"] === 807) {
-                            echo 'disabled="disabled"';
-                        } ?>>Next
+                        if ($data["id"] === 807) echo 'disabled="disabled"'; ?>
+                        >Next
                         </button>
                     </a>
                 </div>

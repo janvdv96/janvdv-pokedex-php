@@ -60,16 +60,6 @@
     width: 65%;
 }
 
-#run {
-    height: 100%;
-    width: 100%;
-    margin-left: -10px;
-    border-radius: 50%;
-    background: url("src/search-icon.png") center center no-repeat;
-    background-size: 50%;
-    cursor: pointer;
-}
-
 #input {
     border: 2px solid black;
     text-align: center;
@@ -117,6 +107,7 @@ body {
     background-size: 100%;
     background-attachment: fixed;
     font-family: 'Press Start 2P', cursive;
+    overflow-y: hidden;
 }
 
 table {
